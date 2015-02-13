@@ -73,12 +73,12 @@ def rest_of_ORF(dna):
     length = len(dna)
     n = 0
     stopcod = ['TAG' , 'TAA', 'TGA']
-    while n < (length) :           #does not go all the way to avoid running out of sets of 3
-        if dna[n:n+3] in stopcod :
+    while n < (length) :             #does not go all the way to avoid running out of sets of 3
+        if dna[n:n+3] in stopcod :   #if the stop codon is present
             return dna[:n]          
         else :
             n = n+3
-    if n == (length - 2):          #if you reach the last group of three and it is not a stop, end the loop
+    if n == (length - 2):            #if you reach the last group of three and it is not a stop, end the loop
         return dna
     return dna
 
@@ -102,13 +102,13 @@ def find_all_ORFs_oneframe(dna):
     thing = []
     startcod = 'ATG'  
     while n < length-2:
-        if startcod in dna[n:n+3]: 
-            found_orf = rest_of_ORF(dna[n:])
-            thing.append(found_orf)
-            n = n + len(found_orf)
+        if startcod in dna[n:n+3]:                       #begins at a start codon
+            found_orf = rest_of_ORF(dna[n:])             #uses restoforf to find the remainder of the gene
+            thing.append(found_orf)                      #records the found orf
+            n = n + len(found_orf)                       #skips to the end of the gene to find a new gene
         else :
-            n += 3
-    return thing
+            n += 3                                       #goes to next codon in the reading frame
+    return thing 
 
 def find_all_ORFs(dna):
     """ Finds all non-nested open reading frames in the given DNA sequence in all 3
@@ -123,9 +123,9 @@ def find_all_ORFs(dna):
     """
 
     orfs = []
-    orfs += (find_all_ORFs_oneframe(dna[0:]))
-    orfs += (find_all_ORFs_oneframe(dna[1:]))
-    orfs += (find_all_ORFs_oneframe(dna[2:]))
+    orfs += (find_all_ORFs_oneframe(dna[0:]))        #reading frame 1
+    orfs += (find_all_ORFs_oneframe(dna[1:]))        #reading frame 2
+    orfs += (find_all_ORFs_oneframe(dna[2:]))        #reading frame 3
     return orfs
 
 def find_all_ORFs_both_strands(dna):
@@ -139,7 +139,7 @@ def find_all_ORFs_both_strands(dna):
     orfs = []
     for i in find_all_ORFs(dna):
         orfs.append(i)
-    for i in find_all_ORFs(get_reverse_complement(dna)):
+    for i in find_all_ORFs(get_reverse_complement(dna)):    #does findallorfs backwards
         orfs.append(i)
     return orfs
 
@@ -152,8 +152,8 @@ def longest_ORF(dna):
   """
     longorf = ''
     for element in (find_all_ORFs_both_strands(dna)):
-        if len(element) > len(longorf): 
-            longorf = element
+        if len(element) > len(longorf):                   #tests the length of the orf it is looking at
+            longorf = element                             #records it if it is longer that the current longest gene 
     return longorf
 
 def longest_ORF_noncoding(dna, num_trials):
@@ -163,9 +163,9 @@ def longest_ORF_noncoding(dna, num_trials):
         returns: the maximum length longest ORF """
     length = 0
     for n in range (0 , num_trials) :
-        shuff_dna = shuffle_string(dna)
-        if len(longest_ORF(shuff_dna)) > length : 
-            length = len(longest_ORF(shuff_dna))
+        shuff_dna = shuffle_string(dna)                  #shuffles the DNA
+        if len(longest_ORF(shuff_dna)) > length :        #finds longest gene in the shuffle
+            length = len(longest_ORF(shuff_dna))         #takes lengthe of the gene found above
     return length
 
 def coding_strand_to_AA(dna):
@@ -183,9 +183,9 @@ def coding_strand_to_AA(dna):
     
     acidlist = ''
     for n in range (0,len(dna)-2,3):
-        amino = dna[n] + dna [n+1] + dna[n+2]
-        amino_acid = aa_table[amino]
-        acidlist = acidlist + amino_acid 
+        amino = dna[n] + dna [n+1] + dna[n+2]         #takes the codon that is next
+        amino_acid = aa_table[amino]                  #determones the acid that is produced by that codon
+        acidlist = acidlist + amino_acid              #adds to the running list of amino acids that make up the gene
     return acidlist
 
 def gene_finder(dna):
@@ -194,9 +194,9 @@ def gene_finder(dna):
   """
     gene = []
     threshold = longest_ORF_noncoding(dna,1500)
-    print threshold                           ##########################################################
+    print threshold                                        #should be around 500? 
     for element in find_all_ORFs_both_strands(dna):
-        if len(element) > threshold:
+        if len(element) > threshold:                       #makes sure the gene didn't happen by accident
             # print element
             gene.append(coding_strand_to_AA(element))
     return gene
