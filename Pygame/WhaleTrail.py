@@ -33,9 +33,9 @@ class Whale(object):
     def __init__(self, pos_x, pos_y):
         self.pos_x = pos_x
         self.pos_y = pos_y
-        self.vel_x = 75                             # sets the speed of scrolling
+        self.vel_x = 175                             # sets the speed of scrolling
         self.vel_y = 0                              # initially isn't moving up & down
-        self.image = pygame.image.load('whale.png')  # loads image of whale
+        self.image = pygame.image.load('orca.gif')  # loads image of whale
         
     def get_bound(self):
         return self.get_drawables()[0].rect        
@@ -60,7 +60,7 @@ class EvilCloud():
     def __init__(self, pos_x, screen_height):
         self.pos_x = pos_x                                                          # starts at pos x 
         self.pos_y_bottom = random.randint(100, screen_height-100)
-        self.pos_y_top = self.pos_y_bottom - 500                                    # determines the opening size of the clouds
+        self.pos_y_top = self.pos_y_bottom - 300                                    # determines the opening size of the clouds
         self.screen_height = screen_height 
         self.cloud1 = pygame.image.load('cloud1.png')
         self.cloud2 = pygame.image.load('cloud2.png')
