@@ -57,7 +57,6 @@ def evaluate_random_function(f, x, y):
         x: the value of x to be used to evaluate the function
         y: the value of y to be used to evaluate the function
         returns: the function value
-
         >>> evaluate_random_function(["x"],-0.5, 0.75)
         -0.5
         >>> evaluate_random_function(["y"],0.1,0.02)
@@ -102,7 +101,6 @@ def remap_interval(val, input_interval_start, input_interval_end, output_interva
         output_inteval_end: the end of the interval that contains all possible
                             output values
         returns: the value remapped from the input to the output interval
-
         >>> remap_interval(0.5, 0, 1, 0, 10)
         5.0
         >>> remap_interval(5, 4, 6, 0, 2)
@@ -119,10 +117,8 @@ def remap_interval(val, input_interval_start, input_interval_end, output_interva
 def color_map(val):
     """ Maps input value between -1 and 1 to an integer 0-255, suitable for
         use as an RGB color code.
-
         val: value to remap, must be a float in the interval [-1, 1]
         returns: integer in the interval [0,255]
-
         >>> color_map(-1.0)
         0
         >>> color_map(1.0)
@@ -139,7 +135,6 @@ def color_map(val):
 
 def test_image(filename, x_size=350, y_size=350):
     """ Generate test image with random pixels and save as an image file.
-
         filename: string filename for image (should be .png)
         x_size, y_size: optional args to set image dimensions (default: 350)
     """
@@ -159,7 +154,6 @@ def test_image(filename, x_size=350, y_size=350):
 
 def generate_art(filename, x_size=1920, y_size=1080):
     """ Generate computational art and save as an image file.
-
         filename: string filename for image (should be .png)
         x_size, y_size: optional args to set image dimensions (default: 350)
     """
